@@ -1,15 +1,11 @@
 import React from "react";
 import { Layout, QueryResult } from "../components";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import { gql } from "../__generated__";
 
 import TrackCard from "../containers/track-card";
-import { Track } from "../__generated__/graphql";
 
-interface TracksData {
-  tracksForHome: Track[];
-}
-
-const TRACKS = gql`
+const TRACKS = gql(`
   query GetTracks {
     tracksForHome {
       id
@@ -23,15 +19,15 @@ const TRACKS = gql`
       }
     }
   }
-`;
+`);
 
 const Tracks = () => {
-  const { loading, error, data } = useQuery<TracksData>(TRACKS);
+  const { loading, error, data } = useQuery(TRACKS);
 
   return (
     <Layout grid>
       <QueryResult error={error} loading={loading} data={data}>
-        {data?.tracksForHome?.map((track, index) => (
+        {data?.tracksForHome?.map((track, _) => (
           <TrackCard key={track.id} track={track} />
         ))}
       </QueryResult>
